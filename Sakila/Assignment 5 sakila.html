@@ -1,0 +1,68 @@
+ <!DOCTYPE html>
+ <html>
+ <body>
+
+
+	<h1>SAKILA CODES</h1>
+<p>1)select name from language ORDER BY name ASC;</p>
+<p>2)select concat(first_name,' ', last_name) from actor where last_name like '%ber%' order by first_name;</p>
+
+<p>3)select distinct last_name from actor; #121 last names are not repeated and are distinct. </p> 
+
+
+<p>4)select count(description) from film where description like '%Crocodile%' and description like '%Shark%';</p>
+
+<p>5)
+select concat(a.first_name, ' ',a.last_name), f.release_year 
+from film f 
+inner join film_actor fa  
+on f.film_id = fa.film_id
+inner join actor a 
+on fa.actor_id = a.actor_id
+where f.description like '%Crocodile%' and f.description like '%Shark%'
+order by a.last_name;
+</p>
+
+
+
+<p>6) 
+select c.name as "Category Name", count(*) as "Film Count"
+from category c 
+inner join film_category fc 
+on c.category_id = fc.category_id 
+inner join film f 
+on fc.film_id = f.film_id
+group by c.name;
+having (count(c.name) >= 40 and count(c.name) <=60);</p>
+
+
+<p>7)
+select concat(a.first_name, ' ', a.last_name) as "Full Name" from actor a 
+where a.first_name = (select first_name from actor where actor_id = 24);</p>
+
+
+
+<p>8)
+select fm.actor_id as "Actor ID", concat(a.first_name, ' ',a.last_name) as "Full Name",sum(fm.actor_id) as "Number of Films" 
+from film f
+inner join film_actor fm on fm.film_id = f.film_id
+inner join actor a on a.actor_id = fm.actor_id
+group by fm.actor_id, concat(a.first_name, ' ',a.last_name) 
+order by count(fm.actor_id) desc
+limit 0,1;</p>
+
+<p>9) 
+select c.name, avg(length) 
+from film f
+inner join film_category fm on f.film_id = fm.film_id
+inner join category c on c.category_id = fm.category_id
+group by c.name  
+having avg(length) > (
+select avg(length) from film where (select count(*) from film));</p>
+
+
+<p>10) 
+select Store, Total_Sales from Sales_by_store;</p>
+
+ </body>
+ </html>
